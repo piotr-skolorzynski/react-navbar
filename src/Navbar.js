@@ -6,25 +6,32 @@ import logo from './logo.svg'
 //zamiast wypisywać linki bezpośrednio w tym komponencie można stworzyć oddzielny plik z danymi do linków oraz social mediów a w tym komponencie po prostu renderować 
 
 const Navbar = () => {
+  //pokazywanie linków po wciśnięciu burger button
+  const [showLinks, setShowLinks] = useState(false);
+
+
   return <nav>
       <div className="nav-center">
         <div className="nav-header">
           <img src={logo} alt="logo" />
-          <button className='nav-toggle'>
+          <button className='nav-toggle' onClick={() => setShowLinks(!showLinks)}>
             <FaBars />
           </button>
         </div>
         <div className="links-container show-container">
           {/* na tym etapie są zwykłe linki, później będzie react-router */}
           {/* przykład wykorzystania zewnętrznych danych do wyświetlenia linków, bardzo użyteczne bo dobre do utrzymania kodu */}
-          <ul className="links">
-            {links.map( link => {
-              const {id, url, text} = link;
-              return <li key={id}>
-                <a href={url}>{text}</a>
-              </li>
-            })}
-          </ul>
+          {/* takie pokazanie linków jest spoko ale nie da się zapodać animacji do płynnego pokazywania i chowania linków */}
+          {showLinks && (
+            <ul className="links">
+              {links.map( link => {
+                const {id, url, text} = link;
+                return <li key={id}>
+                  <a href={url}>{text}</a>
+                </li>
+              })}
+            </ul>
+          )}
         </div>
         <ul className="social-icons">
           {social.map( media => {
