@@ -18,21 +18,20 @@ const Navbar = () => {
             <FaBars />
           </button>
         </div>
-        <div className="links-container show-container">
           {/* na tym etapie są zwykłe linki, później będzie react-router */}
           {/* przykład wykorzystania zewnętrznych danych do wyświetlenia linków, bardzo użyteczne bo dobre do utrzymania kodu */}
-          {/* takie pokazanie linków jest spoko ale nie da się zapodać animacji do płynnego pokazywania i chowania linków */}
-          {showLinks && (
+          {/* prosty toggle na wciśnięcie navbar polega na wykorzystaniu conditionala że zmienna showlinks jest true */}
+          {/* lepszym rozwiązaniem jest */}
+          <div className={`${showLinks ? 'links-container show-container' : 'links-container'}`}>
             <ul className="links">
               {links.map( link => {
                 const {id, url, text} = link;
                 return <li key={id}>
-                  <a href={url}>{text}</a>
-                </li>
+                    <a href={url}>{text}</a>
+                  </li>
               })}
             </ul>
-          )}
-        </div>
+          </div>
         <ul className="social-icons">
           {social.map( media => {
             const {id, url, icon} = media;
