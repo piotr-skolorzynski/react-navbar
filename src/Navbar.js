@@ -8,7 +8,21 @@ import logo from './logo.svg'
 const Navbar = () => {
   //pokazywanie linków po wciśnięciu burger button
   const [showLinks, setShowLinks] = useState(false);
-
+  //useRef do złapania kontener z linkami
+  const linksContainerRef = useRef(null);
+  // useRef do uchwycenia ul z linkami
+  const linksRef = useRef(null);
+  //za każdym razem jak zmienia się zmienna showlinks to będziemy sprawdzać długość listy z linkami żeby ustawić odpowiednią wysokość contenera na linki i poprawnie je wszystkie wyświetlać
+  useEffect(() => {
+    const linksHeight = linksRef.current.getBoundingClientRect().height; //zwraca obiekt z wymiarami elementu top, left, right i bottom, żeby było height to linki muszą być opakowane rodzicem
+    //ustawiamy conditionala do pokazania linków zależnie od wysokości listy
+    //ale trzeba pamiętać, że dla stylu powyżej 800px musimy dać ustawienie wysokości kontenera na auto i !important bo tutaj styl jest liniowy i trzeba go nadpisać
+    if(showLinks) {
+      linksContainerRef.current.style.height = `${linksHeight}px`;
+    } else {
+      linksContainerRef.current.style.height = `0px`;
+    }
+  }, [showLinks]);
 
   return <nav>
       <div className="nav-center">
@@ -21,9 +35,10 @@ const Navbar = () => {
           {/* na tym etapie są zwykłe linki, później będzie react-router */}
           {/* przykład wykorzystania zewnętrznych danych do wyświetlenia linków, bardzo użyteczne bo dobre do utrzymania kodu */}
           {/* prosty toggle na wciśnięcie navbar polega na wykorzystaniu conditionala że zmienna showlinks jest true */}
-          {/* lepszym rozwiązaniem jest */}
-          <div className={`${showLinks ? 'links-container show-container' : 'links-container'}`}>
-            <ul className="links">
+          {/* lepszym rozwiązaniem jest warunkowe wyświetlanie klas*/}
+          {/* kolejnym problemem jest, że jeżeli w przyszłości będziemy zmieniać ilość linków to dobrze by było zamiast zmieniania ręcznie wielkości link-container robić to dynamicznie, można do tego wykorzystać useRef */}
+          <div className="links-container" ref={linksContainerRef}>
+            <ul className="links" ref={linksRef}>
               {links.map( link => {
                 const {id, url, text} = link;
                 return <li key={id}>
